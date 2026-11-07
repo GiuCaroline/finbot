@@ -4,7 +4,7 @@ from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 MODELOS_PADRAO = {
-    "groq": "openai/gpt-oss-120b",  # llama-3.3-70b-versatile foi desligado em 16/08/2026
+    "groq": "openai/gpt-oss-120b",
     "gemini": "gemini-2.5-flash",
     "mistral": "mistral-small-latest",
 }
@@ -19,9 +19,20 @@ class Settings(BaseSettings):
     gemini_api_key: SecretStr | None = None
     mistral_api_key: SecretStr | None = None
 
+    langfuse_public_key: str | None = None
+    langfuse_secret_key: SecretStr | None = None
+    langfuse_host: str = "https://cloud.langfuse.com"
+
+    api_url: str = "http://127.0.0.1:8000"
+
     @property
     def modelo(self) -> str:
         return self.llm_modelo or MODELOS_PADRAO[self.llm_provedor]
+
+    @property
+    def langfuse_ativo(self) -> bool:
+        segredo = self.langfuse_secret_key.get_secret_value() if self.langfuse_secret_key else ""
+        return bool(self.langfuse_public_key and segredo)
 
 
 settings = Settings()
