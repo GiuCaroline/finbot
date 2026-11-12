@@ -19,11 +19,15 @@ class Settings(BaseSettings):
     gemini_api_key: SecretStr | None = None
     mistral_api_key: SecretStr | None = None
 
+    # Langfuse
     langfuse_public_key: str | None = None
     langfuse_secret_key: SecretStr | None = None
     langfuse_host: str = "https://cloud.langfuse.com"
 
     api_url: str = "http://127.0.0.1:8000"
+
+    mongo_url: str = "mongodb://localhost:27017"
+    mongo_banco: str = "finbot"
 
     @property
     def modelo(self) -> str:

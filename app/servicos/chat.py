@@ -1,21 +1,23 @@
-from langchain_core.messages import AIMessage, HumanMessage
-
-from app.agents.chatbot import responder
-from app.llm.observabilidade import callbacks, rastrear
-
-_memoria: dict[str, list] = {}
+from app.agents import grafo
+from app.repository import conversas, perfis
 
 
 def perguntar(pergunta: str, sessao: str, usuario: str = "anonimo") -> dict:
-    historico = _memoria.setdefault(sessao, [])
-    with rastrear(sessao, usuario):
-        resposta = responder(historico, pergunta, callbacks=callbacks())
-    historico += [HumanMessage(pergunta), AIMessage(resposta.content)]
-    return {"resposta": resposta.content}
+    return grafo.executar(pergunta, sessao, usuario)
 
 
 def historico(sessao: str) -> list[dict]:
-    return [
-        {"papel": "user" if m.type == "human" else "assistant", "conteudo": m.content}
-        for m in _memoria.get(sessao, [])
-    ]
+    return grafo.historico(sessao)
+
+
+def listar_conversas(usuario: str) -> list[dict]:
+    return conversas.listar(usuario)
+
+
+def obter_perfil(usuario: str) -> dict:
+    return perfis.obter_perfil(usuario)
+
+
+def salvar_perfil(usuario: str, dados: dict) -> dict:
+    perfis.salvar_perfil(usuario, dados)
+    return perfis.obter_perfil(usuario)

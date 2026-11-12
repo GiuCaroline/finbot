@@ -22,3 +22,5 @@ services:
         value: producao
       - key: LANGFUSE_HOST
         value: https://cloud.langfuse.com
+      - key: MONGO_URL
+        sync: false
