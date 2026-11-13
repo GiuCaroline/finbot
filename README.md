@@ -4,7 +4,7 @@ Assistente educacional para aprender conceitos sobre investimentos no Brasil. Es
 
 ## Etapa atual
 
-Na Aula 1, o projeto tem uma conversa inicial pelo terminal. O FinBot responde a perguntas gerais sobre investimentos e mantém o histórico durante a conversa.
+Na Aula 3, o FinBot ganhou memória persistente com MongoDB Atlas e LangGraph: as conversas e o perfil do usuário sobrevivem a reinícios da API.
 
 ## Requisitos
 
