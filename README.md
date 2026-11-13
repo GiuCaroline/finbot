@@ -44,6 +44,16 @@ pytest -v
 
 O arquivo `.env` contém chaves privadas e não deve ser enviado ao GitHub. O arquivo `.env.example` contém apenas o modelo das configurações e pode ser publicado.
 
+## Links do projeto
+
+- **GitHub:** https://github.com/GiuCaroline/finbot
+- **API no Render:** https://finbot-api-ymgp.onrender.com
+  - Documentação da API: https://finbot-api-ymgp.onrender.com/docs
+  - Teste de funcionamento: https://finbot-api-ymgp.onrender.com/saude
+- **Chat no Streamlit:** https://finbot-3jr4mke47rztyjwha9egw5.streamlit.app
+
+> A API está no plano gratuito do Render: se ficar parada, o primeiro acesso pode levar cerca de 1 minuto para responder.
+
 ## Próximas etapas
 
 Este projeto será ampliado nas aulas seguintes. O link do aplicativo publicado será acrescentado aqui quando ele estiver disponível.
