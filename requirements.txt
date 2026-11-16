@@ -9,3 +9,4 @@ langfuse>=4.0
 langgraph>=1.0
 langgraph-checkpoint-mongodb>=0.3
 pymongo>=4.10
+requests>=2.32
