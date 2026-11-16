@@ -4,7 +4,7 @@ Assistente educacional para aprender conceitos sobre investimentos no Brasil. Es
 
 ## Etapa atual
 
-Na Aula 3, o FinBot ganhou memória persistente com MongoDB Atlas e LangGraph: as conversas e o perfil do usuário sobrevivem a reinícios da API.
+Na Aula 4, o FinBot virou um agente com ferramentas. Ele consulta dados reais e atuais: Selic, CDI e IPCA (Banco Central) e ações, FIIs e Tesouro Direto (brapi.dev). O loop do agente (pensar → ferramenta → pensar) é feito com LangGraph, com um limite de passos para evitar loops infinitos. As conversas e o perfil continuam guardados no MongoDB Atlas.
 
 ## Requisitos
 
@@ -53,6 +53,17 @@ O arquivo `.env` contém chaves privadas e não deve ser enviado ao GitHub. O ar
 - **Chat no Streamlit:** https://finbot-3jr4mke47rztyjwha9egw5.streamlit.app
 
 > A API está no plano gratuito do Render: se ficar parada, o primeiro acesso pode levar cerca de 1 minuto para responder.
+
+## Ferramentas do FinBot
+
+| Ferramenta | O que consulta | Fonte |
+|---|---|---|
+| `indicadores_economicos` | Selic, CDI e IPCA | Banco Central (SGS) |
+| `cotacao_acao` | Cotação de uma ação da B3 | brapi.dev |
+| `indicadores_fii` | Indicadores de um FII | brapi.dev |
+| `tesouro_direto` | Taxa e preço de um título do Tesouro | brapi.dev |
+
+Para testar as ferramentas sem o LLM: `python -m app.tools.mercado`
 
 ## Próximas etapas
 
