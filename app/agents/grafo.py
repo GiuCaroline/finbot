@@ -1,27 +1,16 @@
 from functools import lru_cache
-from typing import Annotated, TypedDict
 
-from langchain_core.messages import AnyMessage, HumanMessage
-from langgraph.graph import END, START, StateGraph
-from langgraph.graph.message import add_messages
+from langchain_core.messages import HumanMessage
 
-from app.agents.chatbot import no_chatbot
+from app.agents.base import criar_agente, fontes_do_turno
 from app.llm.observabilidade import callbacks, rastrear
 from app.repository import checkpointer, conversas, perfis
+from app.tools.mercado import FERRAMENTAS_MERCADO
 from app.utils.mensagens import conversa_limpa
 
 
-class EstadoChat(TypedDict, total=False):
-    messages: Annotated[list[AnyMessage], add_messages]
-    perfil: str
-
-
 def montar_grafo(memoria=None):
-    g = StateGraph(EstadoChat)
-    g.add_node("chatbot", no_chatbot)
-    g.add_edge(START, "chatbot")
-    g.add_edge("chatbot", END)
-    return g.compile(checkpointer=memoria)
+    return criar_agente("finbot", "sistema", FERRAMENTAS_MERCADO, checkpointer=memoria)
 
 
 @lru_cache
@@ -37,7 +26,9 @@ def executar(pergunta: str, sessao: str, usuario: str = "anonimo") -> dict:
     conversas.registrar(sessao, usuario, pergunta)
 
     final = estado["messages"][-1]
-    return {"resposta": final.content, "agente": "conversa", "fontes": []}
+    ultima_pergunta = max(i for i, m in enumerate(estado["messages"]) if isinstance(m, HumanMessage))
+    fontes = fontes_do_turno(estado["messages"][ultima_pergunta:])
+    return {"resposta": final.content, "agente": "finbot", "fontes": fontes}
 
 
 def historico(sessao: str) -> list[dict]:
